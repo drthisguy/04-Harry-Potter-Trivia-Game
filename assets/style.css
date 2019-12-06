@@ -1,0 +1,32 @@
+/* Potter Font */
+@import 'https://fonts.googleapis.com/css?family=Galdeano';
+h1, h3 {
+  font-family: 'Galdeano';
+  
+}
+
+
+/* 
+.jumbotron {
+    position: absolute;
+      animation: one 5s infinite;
+      animation-delay: 5.0s;
+      opacity: 0;
+
+} */
+
+
+@keyframes one {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: .25;
+  }
+  65% {
+    opacity: .75;
+  }
+  100% {
+    opacity: 1;
+  }
+}
