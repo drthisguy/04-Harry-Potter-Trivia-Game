@@ -18,6 +18,7 @@
 
 import {questions} from './questions.js';
 console.log(questions);
+
 var usedQuestions = [];
 function getQuestion(questions) {
     //pick question at random.
@@ -27,30 +28,41 @@ function getQuestion(questions) {
 }
 function paintQuestion(question) {
     var container = document.getElementById('question');
-    var listLength = question.choices.length;
-    if (listLength > 0){
-        var ask = document.createElement('h1');
-        // ask.className = 'display-3';
-        ask.appendChild(document.createTextNode(question.title));
-        var ul = document.createElement('ul');
-        ul.className = 'list-group text-white';
-        
-        for (var i=0; i < question.choices.length; i++) {
-          var li = document.createElement('li');
-          li.className = 'list-group-item d-flex justify-content-between align-items-center text-body';
-          var liValue = document.createTextNode(question.choices[i]);
-          li.appendChild(liValue);
-          ul.appendChild(li);
-        }
-        console.log(ul);
-        container.appendChild(ask);
-        container.appendChild(ul);
-    } else {
-        var message = document.createTextNode('Oh no!! Something went terribly wrong');
-        container.appendChild(message);
-    }
+    var ask = document.createElement('h1');
+    ask.appendChild(document.createTextNode(question.title));
+    var ul = document.createElement('ul');
+    ul.className = 'list-group';
 
+        
+    question.choices.forEach(function(choice) {
+        //create and append list items
+        var li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-center text-body';
+        li.appendChild(document.createTextNode(choice));
+        ul.appendChild(li);
+        //
+        })
+    console.log(ul);
+    container.appendChild(ask);
+    container.appendChild(ul);
 }
+function handleQuestion(nextQuestion) {
+  var answer;
+  var listItems = document.querySelectorAll('.list-group-item');
+  listItems.forEach(function(choice) {
+    choice.addEventListener('click', function(event) {
+        console.log(event.currentTarget.innerHTML);
+        if (event.currentTarget.innerHTML == nextQuestion.answer) {
+            answer = true;  
+        }  else {
+            answer = false;
+        }
+        console.log(answer);
+        return answer;
+        
+    })
+  })
+ };
 
 document.querySelector(".begin").addEventListener("click", function() {
     // swishIn();
@@ -62,6 +74,8 @@ document.querySelector(".begin").addEventListener("click", function() {
     console.log(usedQuestions);
 
     paintQuestion(nextQuestion);
+    console.log(handleQuestion(nextQuestion));
     
+   
     
 })

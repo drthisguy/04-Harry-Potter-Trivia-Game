@@ -1,4 +1,4 @@
-export const questions = [
+export var questions = [
     {
       title: "What house at Hogwarts does Harry belong to?",
       choices: ["Hufflepuff", "Ravenclaw", "Gryffindor", "Slytherin"],
