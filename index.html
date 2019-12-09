@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/sketchy/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <title>Harry Potter Trivia Quiz</title>
 </head>
     
@@ -45,14 +45,28 @@
 
         <!-- basic Jumbotron container -->
         <section class="container mt-5 text-center">
-        <div class="jumbotron border border-white">
-                <h1>Welome to this Harry Potter trivia quiz.</h1>
-                <p>Click below when you're ready to face your destiny.</p>
+          <div class="row">
+          <div class="col">
+        <div class="jumbotron border border-white" id="animate">
+                <h1>Welcom to the Harry Potter trivia quiz.</h1>
+                <p>Click below to begin your O.W.l.s. and face your profecy.</p>
                 <!-- Primary card -->
                
-                <p><a class="btn btn-primary text-white mt-5 btn-lg">Begin Game</a></p>
+                <p><a class="btn btn-primary text-white mt-5 btn-lg begin">Begin Game</a></p>
               </div>
-       
-        </section>
+            </section>
+        
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <div id="question"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      
+        <script type="module" src="assets/srcipts/questions.js"></script>
+        <script type= "module" src="assets/srcipts/app.js"></script>
 </body>
 </html>
