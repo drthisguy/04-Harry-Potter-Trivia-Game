@@ -255,7 +255,7 @@ export var questions = [
       answer: "ILVERMORNY"
     },
     {
-      title: "What is the name of the North American School of Witchcraft and Wizardry?",
+      title: "Which character became a professional Quidditch player?",
       choices: ["GINNY", "HARRY", "RON", "HERMIONE"],
       answer: "GINNY"
     },

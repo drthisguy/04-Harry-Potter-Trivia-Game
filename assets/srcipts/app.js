@@ -19,13 +19,16 @@
 import {questions} from './questions.js';
 console.log(questions);
 
+var nextQuestion;
 var usedQuestions = [];
+
 function getQuestion(questions) {
     //pick question at random.
     var nextQuestion = questions[Math.floor(Math.random() * questions.length)];
     usedQuestions.push(nextQuestion);
     return nextQuestion
 }
+
 function paintQuestion(question) {
     var container = document.getElementById('question');
     var ask = document.createElement('h1');
@@ -46,36 +49,46 @@ function paintQuestion(question) {
     container.appendChild(ask);
     container.appendChild(ul);
 }
+
 function handleQuestion(nextQuestion) {
   var answer;
   var listItems = document.querySelectorAll('.list-group-item');
   listItems.forEach(function(choice) {
     choice.addEventListener('click', function(event) {
-        console.log(event.currentTarget.innerHTML);
-        if (event.currentTarget.innerHTML == nextQuestion.answer) {
-            answer = true;  
+        console.log(event.currentTarget.textContent);
+        if (event.currentTarget.textContent == nextQuestion.answer) {
+            newQuestion();
+
         }  else {
             answer = false;
         }
         console.log(answer);
-        return answer;
-        
     })
   })
- };
+ }
+
+function newQuestion() {
+    //clear last question. 
+    document.querySelector('#question').textContent = '';
+    nextQuestion = getQuestion(questions);
+    //confirm next question is unused. 
+    nextQuestion = nextQuestion.constructor == usedQuestions ? getQuestion() : nextQuestion;
+    paintQuestion(nextQuestion);
+    handleQuestion(nextQuestion);
+ }
 
 document.querySelector(".begin").addEventListener("click", function() {
     // swishIn();
+    //hide welcome screen
+    document.querySelector('.welcome').style.display = "none";
 
-    var nextQuestion = getQuestion(questions);
+    nextQuestion = getQuestion(questions);
     //confirm next question is unused. 
     nextQuestion = nextQuestion.constructor === usedQuestions ? getQuestion() : nextQuestion;
     console.log(nextQuestion);
     console.log(usedQuestions);
 
     paintQuestion(nextQuestion);
-    console.log(handleQuestion(nextQuestion));
-    
-   
-    
+    handleQuestion(nextQuestion);
+ 
 })
