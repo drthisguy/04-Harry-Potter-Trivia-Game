@@ -5,6 +5,10 @@ h1, h3, li, .btn {
   
 }
 
+#timer {
+  text-align: right;
+  font-size: 400%;
+}
 
 /* 
 .jumbotron {

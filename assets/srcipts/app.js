@@ -19,54 +19,86 @@
 import {questions} from './questions.js';
 console.log(questions);
 
-var nextQuestion;
-var usedQuestions = [];
+var nextQuestion, 
+    usedQuestions = [];
 
 function getQuestion(questions) {
     //pick question at random.
-    var nextQuestion = questions[Math.floor(Math.random() * questions.length)];
+    nextQuestion = questions[Math.floor(Math.random() * questions.length)];
     usedQuestions.push(nextQuestion);
     return nextQuestion
 }
 
 function paintQuestion(question) {
-    var container = document.getElementById('question');
-    var ask = document.createElement('h1');
+    document.querySelector('#question').textContent = '';
+    var container = document.getElementById('question'),
+        ask = document.createElement('h1'),
+        ul = document.createElement('ul');
+
     ask.appendChild(document.createTextNode(question.title));
-    var ul = document.createElement('ul');
     ul.className = 'list-group';
 
-        
     question.choices.forEach(function(choice) {
         //create and append list items
         var li = document.createElement('li');
-        li.className = 'list-group-item d-flex justify-content-between align-items-center text-body';
+        li.setAttribute('class','list-group-item list-group-item-action text-body');
         li.appendChild(document.createTextNode(choice));
         ul.appendChild(li);
-        //
         })
     console.log(ul);
     container.appendChild(ask);
     container.appendChild(ul);
 }
 
+function runClock(fullTime) {
+    var startTime = Date.now(),
+        timeLeft,
+        mins,
+        secs,
+        timeString = document.getElementById('timer');
+
+    function timer() {
+        //ellapsed time
+        timeLeft = new Date(fullTime - ((Date.now() - startTime)));
+
+        mins = timeLeft.getMinutes();
+        secs = timeLeft.getSeconds();
+        
+        secs = secs < 10 ? "0" + secs : secs;
+        
+        timeString.textContent = mins + ":" + secs;         
+    };
+    timer();  //start now.
+    setInterval(timer, 1000);
+}
+  
 function handleQuestion(nextQuestion) {
-  var answer;
   var listItems = document.querySelectorAll('.list-group-item');
+
   listItems.forEach(function(choice) {
     choice.addEventListener('click', function(event) {
         console.log(event.currentTarget.textContent);
-        if (event.currentTarget.textContent == nextQuestion.answer) {
-            newQuestion();
+        var click = event.currentTarget;
+        if (click.textContent == nextQuestion.answer) {
+            click.className = 'form-control is-valid';
+            setTimeout(newQuestion,'1000');
 
-        }  else {
-            answer = false;
+        } else {                       
+            click.className = 'form-control is-invalid';
+            setTimeout(function() { 
+            paintQuestion(nextQuestion)
+            handleQuestion(nextQuestion)
+         }, 1000);
+                
+            console.log(nextQuestion);
+            
         }
-        console.log(answer);
     })
   })
  }
-
+function chosePoorly() {
+  
+ };
 function newQuestion() {
     //clear last question. 
     document.querySelector('#question').textContent = '';
@@ -90,5 +122,6 @@ document.querySelector(".begin").addEventListener("click", function() {
 
     paintQuestion(nextQuestion);
     handleQuestion(nextQuestion);
+    runClock(240000); //240 seconds
  
 })
