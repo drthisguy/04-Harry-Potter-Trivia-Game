@@ -137,16 +137,27 @@ function newQuestion() {
     scores = JSON.parse(localStorage.getItem('scores'));
     }
     var container = document.getElementById('scores'),
-        table = document.createElement('table');
+        table = document.createElement('table'),
+        header;
     table.className = 'table table-hover';
+    header.innerHTMl = `<thead>
+    <tr>
+      <th scope="col">Name/th>
+      <th scope="col">Number of Correct Answers</th>
+      <th scope="col">Number of Mistakes</th>
+    </tr>
+  </thead>`;
+    table.appendChild(header);
+
     scores.forEach(function(score) {
-    var tr = document.createElement('tr');   
+    var tr = document.createElement('tr');
 
     var td1 = document.createElement('td');
     var td2 = document.createElement('td');
 
-    var text1 = document.createTextNode('Text1');
-    var text2 = document.createTextNode('Text2');
+    var text1 = document.createTextNode(score.name);
+    var text2 = document.createTextNode(score.wise);
+    var text2 = document.createTextNode(score.poor);
 
     td1.appendChild(text1);
     td2.appendChild(text2);
@@ -154,9 +165,23 @@ function newQuestion() {
     tr.appendChild(td2);
 
     table.appendChild(tr);
-    }
+    })
 
  }
+
+ function setGameInLocalStorage(player) {
+    let players;
+    if(localStorage.getItem('players') === null){
+        players = [];
+     } else {
+            players = JSON.parse(localStorage.getItem('players'));
+         }
+    players.push(player);
+    
+    localStorage.setItem(players);
+    localStorage.setItem(choseWisely);
+}
+
  function endGame() {
     document.querySelector('.add').addEventListener('click', addScore);
 
