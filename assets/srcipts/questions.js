@@ -107,7 +107,7 @@ export var questions = [
     {
       title: "What does the Marauder's Map show?",
       choices: ["EVERYONE AT HOGWART'S LOCATION", "THE PASSWORD TO DUMBLEDORE'S OFFICE", "HIDDEN TREASURE", "THE ROOM OF REQUIREMENT"],
-      answer: "EVERYONE AT HOGWART'S LOCATIONS"
+      answer: "EVERYONE AT HOGWART'S LOCATION"
     },
     {
       title: "Who is Scabbers the rat?",

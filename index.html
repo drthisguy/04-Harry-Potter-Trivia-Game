@@ -1,3 +1,10 @@
+<!-- 
+
+                  Only test this site using live server or some kind of proxy to 
+                  get around the CORS error for access control headers.
+
+ -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,24 +50,50 @@
             </div>
         </nav>
 
-        <!-- basic Jumbotron container -->
-        <section class="container mt-5 text-center welcome">
+        <div class="container">
           <div class="row">
-          <div class="col">
-        <div class="jumbotron border border-white" id="animate">
+
+        <!-- basic Jumbotron container -->
+        <section class="container mt-5 text-center">
+          <div class="row">
+          <div class="col md-3"> 
+          </div>
+        <div class="jumbotron border border-white welcome" id="animate">
                 <h1>Welcom to the Harry Potter trivia quiz.</h1>
                 <p>Click below to begin your O.W.L.s. and face your profecy.</p>
                 <!-- Primary card -->
                
                 <p><a class="btn btn-primary text-white mt-5 btn-lg begin">Begin Game</a></p>
               </div>
-            </section>
+           
+
+            
+            <div class="row end-game">
+              <div class="col">
+              <div class="form-group">
+                <h2>Scores</h2>
+                <label class="col-form-label" for="inputDefault">Name</label>
+                <input type="text" class="form-control" placeholder="Your Name Here..." id="inputDefault"> <p></p>
+                <button type="submit" class="btn btn-primary add">Add</button>
+              </div>
+            </div>
+          </div>
+          <div class="col md-3">
+          </div>
+          </div>
+        </section>
+      
+    </div>
+        </div>
+      </div>
+    
         
         <div class="container game">
           <div class="row">
             <div class="col">
               <div id="timer"></div>
               <div id="question"></div>
+              <div id="scores"></div>
             </div>
           </div>
         </div>
