@@ -2,8 +2,8 @@
 import {questions} from './questions.js';
 console.log(questions);
 
-var nextQuestion, 
-    timeLeft,
+var timeLeft,
+    nextQuestion,
     usedQuestions = [],
     wrongCount = 0,
     choseWisely = 0;
@@ -238,17 +238,44 @@ function clearLocalStorage() {
         storeGameInLS(player);
         getScores();
         document.querySelector('.player-name').value = '';
-        // }
+        }
         event.preventDefault();
     })
     
     document.querySelector('.clear').addEventListener('click', clearLocalStorage);
   }
-// endGame();
-//hide end of game elements.
+
+//hide end of game elements and dropdown.
 document.querySelector('#scores').style.display = "none";
 document.querySelector('.form-group').style.display = "none";
 document.querySelector('.clear').style.display = "none";
+
+document.querySelector(".two-min").onchange = function() {    
+   console.log(document.querySelector('.chng-two').className);
+   
+    document.querySelector('.chng-two').classList.add('active');
+    document.querySelector('.chng-four').classList.remove('active');
+    console.log(document.querySelector('.chng-two').className);
+    }
+document.querySelector(".four-min").onchange = function() {    
+   console.log(document.querySelector('.chng-four').className);
+   
+    document.querySelector('.chng-four').classList.add('active');
+    document.querySelector('.chng-two').classList.remove('active');
+    console.log(document.querySelector('.chng-four').className);
+    }
+
+function gameChooser() {
+    var timeSet = document.querySelector(".four-min").checked,
+        duration;
+
+    if (timeSet) {
+        duration = 240000;
+    } else { 
+        duration = 120000;  
+    }
+      return duration;
+ }
 
 document.querySelector(".begin").addEventListener("click", function() {
     //hide welcome screen
@@ -259,10 +286,10 @@ document.querySelector(".begin").addEventListener("click", function() {
     nextQuestion = nextQuestion.constructor === usedQuestions ? getQuestion() : nextQuestion;
     console.log(nextQuestion);
     console.log(usedQuestions);
-
+    var duration = gameChooser();
     paintQuestion(nextQuestion);
     handleQuestion(nextQuestion);
-    runClock(10000); //4 mins
+    runClock(duration); //2 or 4 mins
  
 })
 
