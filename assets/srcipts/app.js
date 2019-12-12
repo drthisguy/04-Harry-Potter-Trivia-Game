@@ -119,6 +119,47 @@ function newQuestion() {
  function resetColor() {
      document.getElementById('timer').style.color = '#212529';
  }
+
+ function endGame() { 
+    //hide game screen
+   document.querySelector('#question').style.display = 'none';
+   document.querySelector('#timer').style.display = 'none';
+    
+   //show game over screen
+   document.querySelector('.form-group').style.display = "block";
+   document.querySelector('.clear').style.display = "block";
+   //load saved players
+   getScores();
+
+   document.querySelector(".new-game").addEventListener("click", function() {
+       location.reload();
+   })
+
+   //add player to local storage.
+   document.querySelector('.add').addEventListener('click', function(event){
+       
+       var  player = {
+       name : document.querySelector('.player-name').value,
+       score : choseWisely, 
+       mistakes : wrongCount,
+       };
+   
+       console.log(player);
+       
+       
+       if (player.name === '') {
+           alert('Enter your name first');
+       } else {       
+       storeGameInLS(player);  //add player
+       getScores();            //repaint scores
+       //clear input field
+       document.querySelector('.player-name').value = '';
+       }
+       event.preventDefault();
+   })
+   
+   document.querySelector('.clear').addEventListener('click', clearLocalStorage);
+ }
  
  function getScores() {
    var players;
@@ -203,69 +244,9 @@ function clearLocalStorage() {
     localStorage.clear()
     getScores();
     }
- };
+ }
 
- function endGame() { 
-     //hide game screen
-    document.querySelector('#question').style.display = 'none';
-    document.querySelector('#timer').style.display = 'none';
-     
-    //show game over screen
-    document.querySelector('.form-group').style.display = "block";
-    document.querySelector('.clear').style.display = "block";
-    //load saved players
-    getScores();
-
-    document.querySelector(".new-game").addEventListener("click", function() {
-        location.reload();
-    });
-    document.querySelector('.add').addEventListener('click', function(event){
-        
-        var  player = {
-        name : document.querySelector('.player-name').value,
-        score : choseWisely, 
-        mistakes : wrongCount,
-        };
-    
-        console.log(player);
-        
-        
-        if (player.name === '') {
-            alert('Enter your name first');
-        } else {
-       console.log(player.name);
-       
-        storeGameInLS(player);
-        getScores();
-        document.querySelector('.player-name').value = '';
-        }
-        event.preventDefault();
-    })
-    
-    document.querySelector('.clear').addEventListener('click', clearLocalStorage);
-  }
-
-//hide end of game elements and dropdown.
-document.querySelector('#scores').style.display = "none";
-document.querySelector('.form-group').style.display = "none";
-document.querySelector('.clear').style.display = "none";
-
-document.querySelector(".two-min").onchange = function() {    
-   console.log(document.querySelector('.chng-two').className);
-   
-    document.querySelector('.chng-two').classList.add('active');
-    document.querySelector('.chng-four').classList.remove('active');
-    console.log(document.querySelector('.chng-two').className);
-    }
-document.querySelector(".four-min").onchange = function() {    
-   console.log(document.querySelector('.chng-four').className);
-   
-    document.querySelector('.chng-four').classList.add('active');
-    document.querySelector('.chng-two').classList.remove('active');
-    console.log(document.querySelector('.chng-four').className);
-    }
-
-function gameChooser() {
+ function gameChooser() {
     var timeSet = document.querySelector(".four-min").checked,
         duration;
 
@@ -276,7 +257,25 @@ function gameChooser() {
     }
       return duration;
  }
+ 
+//hide end of game elements.
+document.querySelector('#scores').style.display = "none";
+document.querySelector('.form-group').style.display = "none";
+document.querySelector('.clear').style.display = "none";
 
+/*          Event Listeners         */
+
+//change radio buttons for each game.
+document.querySelector(".two-min").onchange = function() {    
+    document.querySelector('.chng-two').classList.add('active');
+    document.querySelector('.chng-four').classList.remove('active');
+    }
+document.querySelector(".four-min").onchange = function() {      
+    document.querySelector('.chng-four').classList.add('active');
+    document.querySelector('.chng-two').classList.remove('active');
+    }
+
+//start game.
 document.querySelector(".begin").addEventListener("click", function() {
     //hide welcome screen
     document.querySelector('.welcome').style.display = "none";
