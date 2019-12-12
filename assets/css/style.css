@@ -5,19 +5,27 @@ h1, h3, h2, li, .btn {
   
 }
 
+.nav-item {
+  margin-right: 100pt;
+}
 #timer {
   text-align: right;
   font-size: 400%;
+  margin-right: 100px;
 }
-
-/* 
-.jumbotron {
-    position: absolute;
-      animation: one 5s infinite;
-      animation-delay: 5.0s;
-      opacity: 0;
-
-} */
+.container {
+  max-width: 600px;
+}
+th {
+  text-align: center;
+}
+/*  Marauders Map Effect  */
+.marauders, .table-hover {
+      animation: one 1.5s 1;
+      animation-fill-mode: forwards;  /*kills it on the last frame*/
+      
+      opacity: 40%;
+}
 
 
 @keyframes one {
@@ -32,5 +40,11 @@ h1, h3, h2, li, .btn {
   }
   100% {
     opacity: 1;
+  }
+}
+
+@media only screen and (max-width: 800px){
+  .nav-item{
+    margin-right: 0pt;
   }
 }

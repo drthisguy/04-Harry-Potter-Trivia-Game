@@ -1,22 +1,20 @@
 import { questions } from "./questions.js";
 console.log(questions);
-
+// global variables
 var timeLeft,
-  nextQuestion,
-  usedQuestions = [],
-  wrongCount = 0,
-  choseWisely = 0;
+    nextQuestion,
+    wrongCount = 0,
+    choseWisely = 0;
 
 function getQuestion(questions) {
   //pick question at random.
   nextQuestion = questions[Math.floor(Math.random() * questions.length)];
-  usedQuestions.push(nextQuestion);
-  //remove question from the remaining question drawings
+
+  //remove the question from the remaining question drawings
   for (var i = 0; i < questions.length; i++) {
       if (questions.indexOf(nextQuestion) !== -1) {
         questions.splice(questions[i], 1); 
     }
-    console.log(questions);
     
   return nextQuestion;
 }
@@ -51,7 +49,10 @@ function runClock(remainTime) {
       remainTime - wrongCount * 15000 - (Date.now() - startTime)
     );
   };
+  //run timer.
   var tickTock = setInterval(timer, 1000);
+
+  //check to see if endgame condition is met
   var checkIn = setInterval(checkTime, 1000);
   function checkTime() {
     if (timeLeft <= 0) {
@@ -92,6 +93,7 @@ function handleQuestion(nextQuestion) {
       if (click.textContent == nextQuestion.answer) {
         click.className = "form-control is-valid";
         setTimeout(newQuestion, 1000);
+        setTimeout(restoreEffect, 250);
         rightSound();
         choseWisely++;
       } else {
@@ -100,6 +102,7 @@ function handleQuestion(nextQuestion) {
         dockTime();
         wrongSound();
         setTimeout(function() {
+          killEffect(false);
           clearInterval(flash);
           resetColor();
           paintQuestion(nextQuestion);
@@ -109,13 +112,12 @@ function handleQuestion(nextQuestion) {
     });
   });
 }
+
 function newQuestion() {
   //clear last question.
   document.querySelector("#question").textContent = "";
   nextQuestion = getQuestion(questions);
-  //confirm next question is unused.
-  nextQuestion =
-    nextQuestion.constructor == usedQuestions ? getQuestion() : nextQuestion;
+ 
   paintQuestion(nextQuestion);
   handleQuestion(nextQuestion);
 }
@@ -137,6 +139,15 @@ function rightSound() {
   var woop = document.getElementById("right-sound");
   woop.play();
 }
+
+//remove/restore marauder's map effect when same question reloads from wrong answer. 
+function killEffect() { 
+    document.getElementById('question').classList.remove("marauders");
+}
+function restoreEffect() {
+    document.getElementById('question').classList.add("marauders");
+ }
+ 
 
 function endGame() {
   //hide game screen
@@ -223,13 +234,13 @@ function getScores() {
     th2.setAttribute("scope", "row");
     th3.setAttribute("scope", "row");
 
-    var text1 = document.createTextNode(player.name);
-    var text2 = document.createTextNode(player.score);
-    var text3 = document.createTextNode(player.mistakes);
+    var name = document.createTextNode(player.name);
+    var score = document.createTextNode(player.score);
+    var mistakes = document.createTextNode(player.mistakes);
 
-    th1.appendChild(text1);
-    th2.appendChild(text2);
-    th3.appendChild(text3);
+    th1.appendChild(name);
+    th2.appendChild(score);
+    th3.appendChild(mistakes);
     tr.appendChild(th1);
     tr.appendChild(th2);
     tr.appendChild(th3);
@@ -298,11 +309,8 @@ document.querySelector(".begin").addEventListener("click", function() {
   document.querySelector(".welcome").style.display = "none";
 
   nextQuestion = getQuestion(questions);
-  //confirm next question is unused.
-//   nextQuestion =
-//     nextQuestion.constructor === usedQuestions ? getQuestion() : nextQuestion;
+
   console.log(nextQuestion);
-  console.log(usedQuestions);
   var duration = gameChooser();
   paintQuestion(nextQuestion);
   handleQuestion(nextQuestion);
