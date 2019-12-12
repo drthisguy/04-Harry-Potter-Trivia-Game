@@ -1,21 +1,4 @@
 
-//revisit if we decide to animate questions in and out from the sides. 
-// function swishIn() {
-   
-//     var elem = document.getElementById("animate");   
-//     var pos = 0;
-//     var id = setInterval(frame, 5);
-//     function frame() {
-//       if (pos == 350) {
-//         clearInterval(id);
-//       } else {
-//         pos++; 
-//         elem.style.top = pos + "5px"; 
-//         elem.style.left = pos + "5px"; 
-//       }
-//     }  
-// }
-
 import {questions} from './questions.js';
 console.log(questions);
 
@@ -57,17 +40,24 @@ function paintQuestion(question) {
 function runClock(remainTime) {
     var startTime = Date.now();
 
-
-    function timer() {
+    var timer = function() {
         //ellapsed time
         timeLeft = new Date((remainTime - (wrongCount*15000)) - ((Date.now() - startTime)));
     }
+    var tickTock = setInterval(timer, 1000);
+    var checkIn = setInterval(checkTime, 1000);
+    function checkTime() {
+      if (timeLeft <= 0) {
+        clearInterval(tickTock);
+        clearInterval(checkIn);
+        endGame();
+    }}
+
     timer();  //start now.
     showTime(); //show now.
-    setInterval(function() {
-        timer() 
-        showTime()
-    }, 1000);
+   
+    setInterval(showTime, 1000)
+
 }
 
 function showTime() {
@@ -79,6 +69,7 @@ function showTime() {
         
         timeString.textContent = mins + ":" + secs;
  }
+console.log(wrongCount);
 
  function dockTime() {
    wrongCount ++;
@@ -142,6 +133,7 @@ function newQuestion() {
         nameHeader = document.createElement('th'),
         correctHeader = document.createElement('th'),
         wrongtHeader = document.createElement('th');
+
     //generate table heading
     correctHeader.setAttribute('scope', 'col');
     wrongtHeader.setAttribute('scope', 'col');
@@ -176,7 +168,7 @@ function newQuestion() {
 
     var text1 = document.createTextNode(player.name);
     var text2 = document.createTextNode(player.score);
-    var text3 = document.createTextNode('0');
+    var text3 = document.createTextNode(player.mistakes);
 
     th1.appendChild(text1);
     th2.appendChild(text2);
@@ -191,7 +183,7 @@ function newQuestion() {
     container.appendChild(table);
  }
 
- function storeGameInLocalStorage(player) {
+ function storeGameInLS(player) {
 
     var players;
     if(localStorage.getItem('players') === null){
@@ -205,36 +197,60 @@ function newQuestion() {
     localStorage.setItem('players', JSON.stringify(players));
 }
 
+function clearLocalStorage() {
+    var conformation = confirm('Are you sure you\'d like to clear the score list?');
+    if (conformation){
+    localStorage.clear()
+    getScores();
+    }
+ };
+
  function endGame() { 
-    
-     getScores();
+     //hide game screen
+    document.querySelector('#question').style.display = 'none';
+    document.querySelector('#timer').style.display = 'none';
+     
+    //show game over screen
+    document.querySelector('.form-group').style.display = "block";
+    document.querySelector('.clear').style.display = "block";
+    //load saved players
+    getScores();
+
+    document.querySelector(".new-game").addEventListener("click", function() {
+        location.reload();
+    });
     document.querySelector('.add').addEventListener('click', function(event){
         
         var  player = {
         name : document.querySelector('.player-name').value,
         score : choseWisely, 
+        mistakes : wrongCount,
         };
     
         console.log(player);
         
         
-        if (player.value === '') {
+        if (player.name === '') {
             alert('Enter your name first');
-        } 
+        } else {
+       console.log(player.name);
        
-        storeGameInLocalStorage(player);
+        storeGameInLS(player);
         getScores();
         document.querySelector('.player-name').value = '';
+        // }
         event.preventDefault();
     })
+    
+    document.querySelector('.clear').addEventListener('click', clearLocalStorage);
   }
-
- endGame(); 
-
-document.querySelector('.welcome').style.display = "none";
+// endGame();
+//hide end of game elements.
+document.querySelector('#scores').style.display = "none";
+document.querySelector('.form-group').style.display = "none";
+document.querySelector('.clear').style.display = "none";
 
 document.querySelector(".begin").addEventListener("click", function() {
-    // swishIn();
     //hide welcome screen
     document.querySelector('.welcome').style.display = "none";
 
@@ -246,7 +262,7 @@ document.querySelector(".begin").addEventListener("click", function() {
 
     paintQuestion(nextQuestion);
     handleQuestion(nextQuestion);
-    runClock(240000); //240 seconds
+    runClock(10000); //4 mins
  
 })
 
