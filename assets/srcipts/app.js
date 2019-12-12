@@ -19,12 +19,12 @@
 import {questions} from './questions.js';
 console.log(questions);
 
-var player = document.querySelector('.player'),
-    nextQuestion, 
+var nextQuestion, 
     timeLeft,
     usedQuestions = [],
     wrongCount = 0,
     choseWisely = 0;
+
 
 function getQuestion(questions) {
     //pick question at random.
@@ -60,7 +60,7 @@ function runClock(remainTime) {
 
     function timer() {
         //ellapsed time
-        timeLeft = new Date((remainTime - wrongCount) - ((Date.now() - startTime)));
+        timeLeft = new Date((remainTime - (wrongCount*15000)) - ((Date.now() - startTime)));
     }
     timer();  //start now.
     showTime(); //show now.
@@ -81,7 +81,7 @@ function showTime() {
  }
 
  function dockTime() {
-   wrongCount += 15000;
+   wrongCount ++;
 }
   
 function handleQuestion(nextQuestion) {
@@ -130,69 +130,106 @@ function newQuestion() {
  }
  
  function getScores() {
-   var scores;
-    if(localStorage.getItem('scores') === null){
-    scores = [];
+   var players;
+    if(localStorage.getItem('players') === null){
+    players = [];
     } else {
-    scores = JSON.parse(localStorage.getItem('scores'));
+    players = JSON.parse(localStorage.getItem('players'));
     }
-    var container = document.getElementById('scores'),
+    var container = document.getElementById('storage'),
         table = document.createElement('table'),
-        header;
+        header = document.createElement('tr'),
+        nameHeader = document.createElement('th'),
+        correctHeader = document.createElement('th'),
+        wrongtHeader = document.createElement('th');
+    //generate table heading
+    correctHeader.setAttribute('scope', 'col');
+    wrongtHeader.setAttribute('scope', 'col');
+    var nameText = document.createTextNode('Name');
+    var correctText = document.createTextNode('Number of Correct Answers');
+    var wrongText = document.createTextNode('Number of Mistakes');
+    nameHeader.appendChild(nameText);
+    correctHeader.appendChild(correctText);
+    wrongtHeader.appendChild(wrongText);
     table.className = 'table table-hover';
-    header.innerHTMl = `<thead>
-    <tr>
-      <th scope="col">Name/th>
-      <th scope="col">Number of Correct Answers</th>
-      <th scope="col">Number of Mistakes</th>
-    </tr>
-  </thead>`;
+    header.appendChild(nameHeader);
+    header.appendChild(correctHeader);
+    header.appendChild(wrongtHeader);
     table.appendChild(header);
 
-    scores.forEach(function(score) {
+    //clear out existing table
+    container.textContent = '';
+    
+    console.log(players);
+
+    //generate table content
+    players.forEach(function(player) {
     var tr = document.createElement('tr');
+    tr.setAttribute('class', 'table-active');
 
-    var td1 = document.createElement('td');
-    var td2 = document.createElement('td');
+    var th1 = document.createElement('th');
+    var th2 = document.createElement('th');
+    var th3 = document.createElement('th');
+    th1.setAttribute('scope', 'row');
+    th2.setAttribute('scope', 'row');
+    th3.setAttribute('scope', 'row');
 
-    var text1 = document.createTextNode(score.name);
-    var text2 = document.createTextNode(score.wise);
-    var text2 = document.createTextNode(score.poor);
+    var text1 = document.createTextNode(player.name);
+    var text2 = document.createTextNode(player.score);
+    var text3 = document.createTextNode('0');
 
-    td1.appendChild(text1);
-    td2.appendChild(text2);
-    tr.appendChild(td1);
-    tr.appendChild(td2);
+    th1.appendChild(text1);
+    th2.appendChild(text2);
+    th3.appendChild(text3);
+    tr.appendChild(th1);
+    tr.appendChild(th2);
+    tr.appendChild(th3);
 
     table.appendChild(tr);
     })
-
+    
+    container.appendChild(table);
  }
 
- function setGameInLocalStorage(player) {
-    let players;
+ function storeGameInLocalStorage(player) {
+
+    var players;
     if(localStorage.getItem('players') === null){
         players = [];
      } else {
             players = JSON.parse(localStorage.getItem('players'));
          }
-    players.push(player);
+     //add game to list
+     players.push(player);
     
-    localStorage.setItem(players);
-    localStorage.setItem(choseWisely);
+    localStorage.setItem('players', JSON.stringify(players));
 }
 
- function endGame() {
-    document.querySelector('.add').addEventListener('click', addScore);
-
-   
+ function endGame() { 
+    
+     getScores();
+    document.querySelector('.add').addEventListener('click', function(event){
+        
+        var  player = {
+        name : document.querySelector('.player-name').value,
+        score : choseWisely, 
+        };
+    
+        console.log(player);
+        
+        
+        if (player.value === '') {
+            alert('Enter your name first');
+        } 
+       
+        storeGameInLocalStorage(player);
+        getScores();
+        document.querySelector('.player-name').value = '';
+        event.preventDefault();
+    })
   }
 
-  function addScore() {
-     if (player.value === '') {
-       alert('Please enter your name first');  
-     } 
-   };
+ endGame(); 
 
 document.querySelector('.welcome').style.display = "none";
 

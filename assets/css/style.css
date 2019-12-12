@@ -1,6 +1,6 @@
 /* Potter Font */
 @import 'https://fonts.googleapis.com/css?family=Galdeano';
-h1, h3, li, .btn {
+h1, h3, h2, li, .btn {
   font-family: 'Galdeano';
   
 }
