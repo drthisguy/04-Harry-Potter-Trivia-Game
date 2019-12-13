@@ -1,10 +1,11 @@
 import { questions } from "./questions.js";
-console.log(questions);
 // global variables
 var timeLeft,
     nextQuestion,
     wrongCount = 0,
     choseWisely = 0;
+
+                    /*      Functions       */
 
 function getQuestion(questions) {
   //pick question at random.
@@ -12,10 +13,9 @@ function getQuestion(questions) {
 
   //remove the question from the remaining question drawings
   for (var i = 0; i < questions.length; i++) {
-      if (questions.indexOf(nextQuestion) !== -1) {
+      if (questions.indexOf(nextQuestion) !== 1) {
         questions.splice(questions[i], 1); 
     }
-    
   return nextQuestion;
 }
 }
@@ -35,7 +35,6 @@ function paintQuestion(question) {
     li.appendChild(document.createTextNode(choice));
     ul.appendChild(li);
   });
-  console.log(ul);
   container.appendChild(ask);
   container.appendChild(ul);
 }
@@ -48,7 +47,8 @@ function runClock(remainTime) {
     timeLeft = new Date(
       remainTime - wrongCount * 15000 - (Date.now() - startTime)
     );
-  };
+  }
+
   //run timer.
   var tickTock = setInterval(timer, 1000);
 
@@ -77,41 +77,42 @@ function showTime() {
 
   timeString.textContent = mins + ":" + secs;
 }
-console.log(wrongCount);
-
-function dockTime() {
-  wrongCount++;
-}
 
 function handleQuestion(nextQuestion) {
   var listItems = document.querySelectorAll(".list-group-item");
 
   listItems.forEach(function(choice) {
     choice.addEventListener("click", function(event) {
-      console.log(event.currentTarget.textContent);
       var click = event.currentTarget;
       if (click.textContent == nextQuestion.answer) {
         click.className = "form-control is-valid";
-        setTimeout(newQuestion, 1000);
-        setTimeout(restoreEffect, 250);
-        rightSound();
-        choseWisely++;
+        correctAns();
       } else {
         click.className = "form-control is-invalid";
-        var flash = setInterval(flashTimer, 200);
-        dockTime();
-        wrongSound();
-        setTimeout(function() {
-          killEffect(false);
-          clearInterval(flash);
-          resetColor();
-          paintQuestion(nextQuestion);
-          handleQuestion(nextQuestion);
-        }, 1000);
+        inCorrectAns();
       }
-    });
-  });
+    })
+  })
 }
+
+function correctAns() {
+  setTimeout(newQuestion, 1000);
+  rightSound();
+  choseWisely++;
+ }
+
+function inCorrectAns() {
+  var flash = setInterval(flashTimer, 200);
+  wrongCount++;
+  wrongSound()
+
+  setTimeout(function() {
+  clearInterval(flash);
+  resetColor();
+  paintQuestion(nextQuestion);
+  handleQuestion(nextQuestion);
+  }, 1000);
+ }
 
 function newQuestion() {
   //clear last question.
@@ -121,11 +122,13 @@ function newQuestion() {
   paintQuestion(nextQuestion);
   handleQuestion(nextQuestion);
 }
+
 function flashTimer() {
   var flash = document.getElementById("timer");
 
   flash.style.color = flash.style.color == "red" ? "#212529" : "red";
 }
+
 function resetColor() {
   document.getElementById("timer").style.color = "#212529";
 }
@@ -139,15 +142,6 @@ function rightSound() {
   var woop = document.getElementById("right-sound");
   woop.play();
 }
-
-//remove/restore marauder's map effect when same question reloads from wrong answer. 
-function killEffect() { 
-    document.getElementById('question').classList.remove("marauders");
-}
-function restoreEffect() {
-    document.getElementById('question').classList.add("marauders");
- }
- 
 
 function endGame() {
   //hide game screen
@@ -172,8 +166,6 @@ function endGame() {
       mistakes: wrongCount
     };
 
-    console.log(player);
-
     if (player.name === "") {
       alert("Enter your name first");
     } else {
@@ -184,7 +176,7 @@ function endGame() {
     }
     event.preventDefault();
   })
-
+  //listen to clear btn
   document.querySelector(".clear").addEventListener("click", clearLocalStorage);
 }
 
@@ -196,11 +188,11 @@ function getScores() {
     players = JSON.parse(localStorage.getItem("players"));
   }
   var container = document.getElementById("storage"),
-    table = document.createElement("table"),
-    header = document.createElement("tr"),
-    nameHeader = document.createElement("th"),
-    correctHeader = document.createElement("th"),
-    wrongtHeader = document.createElement("th");
+      table = document.createElement("table"),
+      header = document.createElement("tr"),
+      nameHeader = document.createElement("th"),
+      correctHeader = document.createElement("th"),
+      wrongtHeader = document.createElement("th");
 
   //generate table heading
   correctHeader.setAttribute("scope", "col");
@@ -260,23 +252,23 @@ function storeGameInLS(player) {
   }
   //add game to list
   players.push(player);
-
+  //set back in LS
   localStorage.setItem("players", JSON.stringify(players));
 }
 
 function clearLocalStorage() {
   var conformation = confirm(
     "Are you sure you'd like to clear the score list?"
-  );
+  )
   if (conformation) {
     localStorage.clear();
-    getScores();
+    getScores(); //display empty table
   }
 }
 
 function gameChooser() {
   var timeSet = document.querySelector(".four-min").checked,
-    duration;
+      duration;
 
   if (timeSet) {
     duration = 240000;
@@ -310,7 +302,6 @@ document.querySelector(".begin").addEventListener("click", function() {
 
   nextQuestion = getQuestion(questions);
 
-  console.log(nextQuestion);
   var duration = gameChooser();
   paintQuestion(nextQuestion);
   handleQuestion(nextQuestion);

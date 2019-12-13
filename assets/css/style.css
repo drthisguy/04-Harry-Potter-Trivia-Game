@@ -1,8 +1,7 @@
 /* Potter Font */
 @import 'https://fonts.googleapis.com/css?family=Galdeano';
 h1, h3, h2, li, .btn {
-  font-family: 'Galdeano';
-  
+  font-family: 'Galdeano'; 
 }
 
 .nav-item {
@@ -20,13 +19,12 @@ th {
   text-align: center;
 }
 /*  Marauders Map Effect  */
-.marauders, .table-hover {
+h1, .table-hover {
       animation: one 1.5s 1;
       animation-fill-mode: forwards;  /*kills it on the last frame*/
       
       opacity: 40%;
 }
-
 
 @keyframes one {
   0% {
