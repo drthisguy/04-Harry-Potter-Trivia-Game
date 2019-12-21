@@ -19,7 +19,7 @@ th {
   text-align: center;
 }
 /*  Marauders Map Effect  */
-h1, .table-hover {
+h1, #scores, .form-group, .clear, .welcome, .table-hover {
       animation: one 1.5s 1;
       animation-fill-mode: forwards;  /*kills it on the last frame*/
       

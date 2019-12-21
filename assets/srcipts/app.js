@@ -7,18 +7,23 @@ var timeLeft,
 
                     /*      Functions       */
 
-function getQuestion(questions) {
-  //pick question at random.
-  nextQuestion = questions[Math.floor(Math.random() * questions.length)];
+function randomizor(arr) {
+  return arr[Math.floor(Math.random() * arr.length)]
+ }
 
+ function getQuestion(questions) {
+  //pick question at random.
+  nextQuestion = randomizor(questions);
+  
   //remove the question from the remaining question drawings
   for (var i = 0; i < questions.length; i++) {
-      if (questions.indexOf(nextQuestion) !== 1) {
-        questions.splice(questions[i], 1); 
+      if (questions[i].answer === nextQuestion.answer) {
+        questions.splice(i, 1);         
     }
+  }
   return nextQuestion;
 }
-}
+
 function paintQuestion(question) {
   document.querySelector("#question").textContent = "";
   var container = document.getElementById("question"),
@@ -104,7 +109,7 @@ function correctAns() {
 function inCorrectAns() {
   var flash = setInterval(flashTimer, 200);
   wrongCount++;
-  wrongSound()
+  // wrongSound()  disabled
 
   setTimeout(function() {
   clearInterval(flash);

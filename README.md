@@ -1,4 +1,4 @@
-# Homework-4
+﻿# Homework-4
 Online Trivia Quiz
 
 As is probably deduced, this an online trivia game, base on the popular Harry Potter franchise.  It is a person feat of vanilla javaScript and DOM traversal for myself.  It’s also a lot of fun!  Players can choose between 2- or 4-minute games.  The goal is to answer as many correctly within that time interval.  Each wrong answer will deduct 15 seconds from your remaining time.  Players can store their high scores in the browser’s local storage for comparison. 
