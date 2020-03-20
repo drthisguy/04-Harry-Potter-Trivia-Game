@@ -17,7 +17,7 @@ Mics Audio sound clips
 
 Deployed application site:
 
-https://drthisguy.github.io/Homework-4/
+https://drthisguy.github.io/04-Harry-Potter-Trivia-Game/
 
 Screen grabs:
 
