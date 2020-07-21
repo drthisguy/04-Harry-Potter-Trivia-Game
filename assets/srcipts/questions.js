@@ -22,10 +22,10 @@ export var questions = [
     {
       title: "What does the Sorcerer's Stone do?",
       choices: ["TRANSFORMS THE ONE WHO HOLDS IT INTO AN ANIMAL", "TRANSFORMS ANY METAL INTO GOLD & PRODUCES THE ELIXER OF LIFE", "MAKES THE ONE THAT HOLDS IT INVISIBLE", "TELLS THE ONE THAT HOLDS IT THEIR FUTURE"],
-      answer: "TRANSFORMS ANY METAL INTO GOLD & PRODUCES THE ELIXER OF LIFE"
+      answer: "TRANSFORMS ANY METAL INTO GOLD & PRODUCES THE ELIXIR OF LIFE"
     },
     {
-      title: "What power do the dementors have over people?",
+      title: "What power do the Dementors have over people?",
       choices: ["THEY MAKE THEM GO CRAZY", "THEY CAUSE THEM TO HARM ONE ANOTHER", "THEY DRAIN THEM OF ALL HAPPINESS", "THEY MAKE THEM DO THEIR BIDDING"],
       answer: "THEY DRAIN THEM OF ALL HAPPINESS"
     },

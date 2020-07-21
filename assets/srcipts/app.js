@@ -31,7 +31,7 @@ function paintQuestion(question) {
     ul = document.createElement("ul");
 
   ask.appendChild(document.createTextNode(question.title));
-  ul.className = "list-group";
+  ul.classList.add("list-group");
 
   question.choices.forEach(function(choice) {
     //create and append list items
@@ -48,7 +48,7 @@ function runClock(remainTime) {
   var startTime = Date.now();
 
   var timer = function() {
-    //ellapsed time
+    //elapsed time
     timeLeft = new Date(
       remainTime - wrongCount * 15000 - (Date.now() - startTime)
     );
@@ -89,7 +89,7 @@ function handleQuestion(nextQuestion) {
   listItems.forEach(function(choice) {
     choice.addEventListener("click", function(event) {
       var click = event.currentTarget;
-      if (click.textContent == nextQuestion.answer) {
+      if (click.textContent === nextQuestion.answer) {
         click.className = "form-control is-valid";
         correctAns();
       } else {
